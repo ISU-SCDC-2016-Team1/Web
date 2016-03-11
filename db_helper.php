@@ -3,8 +3,8 @@
 
 function db_get_hash($username){
     try{
-        $user = "root";
-        $pass = "cdc";
+        $user = "web";
+        $pass = "7f0DlNcl3Lv5rQ6sHOuq";
         $db = "web";
         $host = "localhost";
         mysql_connect($host,$user,$pass);
@@ -24,8 +24,8 @@ function db_get_hash($username){
 
 function db_get_salt($username){
     try{
-        $user = "root";
-        $pass = "cdc";
+        $user = "web";
+        $pass = "7f0DlNcl3Lv5rQ6sHOuq";
         $db = "web";
         $host = "localhost";
         mysql_connect($host,$user,$pass);
@@ -44,8 +44,8 @@ function db_get_salt($username){
 }
 
 function db_user_exists($username){
-    $user = "root";
-    $pass = "cdc";
+    $user = "web";
+    $pass = "7f0DlNcl3Lv5rQ6sHOuq";
     $db = "web";
     $host = "localhost";
     mysql_connect($host,$user,$pass);
@@ -66,8 +66,8 @@ function db_user_exists($username){
 
 function db_get_group($username){
     try{
-        $user = "root";
-        $pass = "cdc";
+        $user = "web";
+        $pass = "7f0DlNcl3Lv5rQ6sHOuq";
         $db = "web";
         $host = "localhost";
         mysql_connect($host,$user,$pass);
@@ -86,8 +86,8 @@ function db_get_group($username){
 }
 
 function db_get_creditcard($username){
-    $user = "root";
-    $pass = "cdc";
+    $user = "web";
+    $pass = "7f0DlNcl3Lv5rQ6sHOuq";
     $db = "web";
     $host = "localhost";
     mysql_connect($host,$user,$pass);
@@ -103,8 +103,8 @@ function db_get_creditcard($username){
 }
 
 function db_get_users(){
-    $user = "root";
-    $pass = "cdc";
+    $user = "web";
+    $pass = "7f0DlNcl3Lv5rQ6sHOuq";
     $db = "web";
     $host = "localhost";
     mysql_connect($host,$user,$pass);
@@ -120,8 +120,8 @@ function db_get_users(){
 }
 
 function db_create_user($username,$password,$salt,$creditcard,$group){
-        $user = "root";
-        $pass = "cdc";
+        $user = "web";
+        $pass = "7f0DlNcl3Lv5rQ6sHOuq";
         $db = "web";
         $host = "localhost";
         mysql_connect($host,$user,$pass);
@@ -133,8 +133,8 @@ function db_create_user($username,$password,$salt,$creditcard,$group){
 }
 
 function db_update_user($username,$password,$salt,$creditcard,$group){
-        $user = "root";
-        $pass = "cdc";
+        $user = "web";
+        $pass = "7f0DlNcl3Lv5rQ6sHOuq";
         $db = "web";
         $host = "localhost";
         mysql_connect($host,$user,$pass);
@@ -146,8 +146,8 @@ function db_update_user($username,$password,$salt,$creditcard,$group){
 }
 
 function db_update_cc($username,$creditcard,$group){
-        $user = "root";
-        $pass = "cdc";
+        $user = "web";
+        $pass = "7f0DlNcl3Lv5rQ6sHOuq";
         $db = "web";
         $host = "localhost";
         mysql_connect($host,$user,$pass);
@@ -159,8 +159,8 @@ function db_update_cc($username,$creditcard,$group){
 }
 
 function db_insert_cookie($username,$name,$value){
-        $user = "root";
-        $pass = "cdc";
+        $user = "web";
+        $pass = "7f0DlNcl3Lv5rQ6sHOuq";
         $db = "web";
         $host = "localhost";
         mysql_connect($host,$user,$pass);
@@ -173,8 +173,8 @@ function db_insert_cookie($username,$name,$value){
 
 function db_get_cookie_user($value){
     try{
-        $user = "root";
-        $pass = "cdc";
+        $user = "web";
+        $pass = "7f0DlNcl3Lv5rQ6sHOuq";
         $db = "web";
         $host = "localhost";
         mysql_connect($host,$user,$pass);
@@ -195,8 +195,8 @@ function db_get_cookie_user($value){
 
 function db_get_cookie_group($value){
     try{
-        $user = "root";
-        $pass = "cdc";
+        $user = "web";
+        $pass = "7f0DlNcl3Lv5rQ6sHOuq";
         $db = "web";
         $host = "localhost";
         mysql_connect($host,$user,$pass);
@@ -215,8 +215,8 @@ function db_get_cookie_group($value){
 }
 
 function db_get_comments($num){
-    $user = "root";
-    $pass = "cdc";
+    $user = "web";
+    $pass = "7f0DlNcl3Lv5rQ6sHOuq";
     $db = "web";
     $host = "localhost";
     mysql_connect($host,$user,$pass);
@@ -228,8 +228,8 @@ function db_get_comments($num){
 }
 
 function db_put_comment($comment){
-    $user = "root";
-    $pass = "cdc";
+    $user = "web";
+    $pass = "7f0DlNcl3Lv5rQ6sHOuq";
     $db = "web";
     $host = "localhost";
     mysql_connect($host,$user,$pass);

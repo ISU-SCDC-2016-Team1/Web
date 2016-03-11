@@ -121,7 +121,7 @@ if(isset($_COOKIE)){
         ?>
       </div>
       <div class="container" style="text-align: center; margin-top: 30px;">
-        <img src="/dist/img/real_hackers.png"/>
+        <img style="border:  40px solid transparent; border-image: url('/logo.png');" src="/dist/img/real_hackers.png"/>
       </div>
 
       <hr>

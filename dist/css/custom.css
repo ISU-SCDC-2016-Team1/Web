@@ -1,4 +1,12 @@
 
+/* Branding */
+body {
+  background:  url("/dist/img/bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .navbar-static-top {
   margin-bottom: 19px;
 }
