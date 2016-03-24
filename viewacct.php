@@ -78,7 +78,6 @@ $private_key = get_public_key($user);
        <form class="form-signin" method="post" action="/updatecc.php">
        <h3 class="form-signin-heading">Change Credit Card</h3>
         <input name="username" type="hidden" class="form-control" value="<?php echo $user;?>">
-        <input name="group" type="hidden" class="form-control" value="<?php echo $group;?>">
         <label for="inputcc" class="sr-only">Credit Card</label>
         <input name="creditcard" type="text" id="inputcc" class="form-control" placeholder="Credit Card" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Update Credit Card</button>
