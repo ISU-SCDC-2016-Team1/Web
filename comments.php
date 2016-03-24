@@ -10,21 +10,7 @@ $comments = db_get_comments($limit);
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="/img/favicon.ico">
-
-    <title>Cluster Deployment Company</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="/dist/css/custom.css" rel="stylesheet">
+    <?php require_once 'head.php'; ?>
   </head>
   <body>
       <?php require_once 'nav.php'; ?>
@@ -69,11 +55,5 @@ $comments = db_get_comments($limit);
         <p>&copy; 2016 CDC Inc. <a href="/privacy.txt">privacy policy</a></p>
       </footer>
     </div> <!-- /container -->
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/dist/js/jquery.min.js"></script>
-    <script src="/dist/js/bootstrap.min.js"></script>
   </body>
 </html>

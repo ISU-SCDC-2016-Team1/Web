@@ -1,7 +1,7 @@
 <?php
 
 require_once "login_helper.php";
-verify_session();
+require_authenticated();
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if(isset($_POST['username']) && isset($_POST['creditcard']) && isset($_POST['group'])){
         $u = $_POST['username'];
