@@ -18,12 +18,12 @@
     unset($M_database);
 
 function clean_input($regex, $input) {
-	if ($regex != "comments"){
-		$lstring = preg_replace($regex, '', str_replace(chr(0), '', $input));
-	}
-	else{
-		$lstring = preg_replace(str_replace(chr(0), '', $input));
-	}
+    if ($regex != "comments"){
+        $lstring = preg_replace($regex, '', str_replace(chr(0), '', $input));
+    }
+    else{
+        $lstring = preg_replace(str_replace(chr(0), '', $input));
+    }
     $lstring = preg_replace($regex, '', str_replace(chr(0), '', $input));
     $string = stripslashes(strip_tags($lstring));
     while ($string != $lstring) {
@@ -41,10 +41,10 @@ function db_get_creditcard($username) {
     $stmt=$mysqli->prepare($query);
     $stmt->bind_param("s", $username);
     $cc = NULL;
-	$stmt->bind_result($cc);
-	if(!$stmt->fetch()){
-			$cc ="";
-	}
+    $stmt->bind_result($cc);
+    if(!$stmt->fetch()){
+        $cc ="";
+    }
 
     return $cc;
 }
@@ -68,9 +68,9 @@ function db_update_user($username,$creditcard){
     $query="update credentials set username='?', creditcard='?' where username='?'";
     $stmt=$mysqli->prepare($query);
     $stmt->bind_param("sss", $username, $creditcard, $_SESSION['username']);
-	if(!$stmt->fetch()){
-			return false;
-	}
+      if(!$stmt->execute()){
+        return false;
+    }
     $_SESSION['username'] = $username;
     return true;
 }
@@ -79,34 +79,40 @@ function db_update_cc($username,$creditcard){
 
     global $mysqli;
     $query="update credentials set creditcard='?' where username='?'";
-	$stmt=$mysqli->prepare($query);
+    $stmt=$mysqli->prepare($query);
     $stmt->bind_param("ss", $creditcard, $username);
-	if(!$stmt->fetch()){
-			return false;
-	}
+      if(!$stmt->execute()){
+          return false;
+      }
 
     return true;
 }
 
 function db_get_comments($num) {
-   // TODO: Sanitize output
+    $limit = clean_input('/[^0-9]/', $num);
+    if ($limit == '') {
+        $limit = 10;
+    }
     global $mysqli;
-    $query="select * from comments limit ".$num;
+    $query="SELECT comment FROM comments ORDER BY id DESC LIMIT ?";
     $stmt = $conn->prepare()
-    $result=mysql_query($query);
-    mysql_close();
-    return $result;
+    $stmt->bind_param("i", $limit);
+    $comment = NULL;
+    $comments = [];
+    $stmt->bind_result($comment)
+    while($stmt->fetch()){
+        $comments[] = clean_input("comments", $comment);
+      }
+    return $comments;
 }
 
 function db_put_comment($comment) {
-    // TODO: Sanitize input
-	global $mysqli;
-
+    $value = clean_input("comments", $comment)
+    global $mysqli;
     $sql = "INSERT INTO comments (c) VALUES (?)";
     $stmt = $mysqli->prepare($sql);
-    $stmt->bind_param("s", $comment);
+    $stmt->bind_param("s", $value);
     $stmt->execute()
-    mysql_close();
     return $result;
 }
 ?>

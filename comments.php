@@ -3,6 +3,15 @@ require_once "login_helper.php";
 require_once "db_helper.php";
 verify_session();
 
+$limit = 10;
+
+if (isset($_GET['l'])) {
+  $limit = clean_input('/[^0-9]/', $_GET['l']);
+  if ($limit == '') {
+    $limit = 10;
+  }
+}
+
 $comments = db_get_comments($limit);
 
 ?>
@@ -22,12 +31,8 @@ $comments = db_get_comments($limit);
         </div>
         <div class="col-md-6 jumbotron">
         <?php
-        while ($row = mysql_fetch_assoc($comments)) {
-            $str = '';
-            foreach($row as $r){
-                $str = $str.' '.$r;
-            }
-            echo '<p style="padding-left: 10px;">'.$str.'</p>';
+        foreach ($comments as $comment) {
+            echo '<p style="padding-left: 10px;">'.$comment.'</p>';
         }
         ?>
        </div>
