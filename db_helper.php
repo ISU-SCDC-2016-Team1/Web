@@ -1,4 +1,7 @@
 <?php
+require_once "login_helper.php";
+verify_session();
+
 function db_get_hash($username) {
     try{
         $user = "web";

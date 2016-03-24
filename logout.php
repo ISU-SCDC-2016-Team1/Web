@@ -1,5 +1,5 @@
 <?php
-setcookie('session','deleted',0,'/');
-setcookie('group','deleted',0,'/');
+require_once "login_helper.php";
+destroy_session();
 header('Location: /');
 ?>

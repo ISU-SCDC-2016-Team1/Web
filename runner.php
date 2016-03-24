@@ -1,7 +1,9 @@
 <?php
-require_once "libcookie.php";
 require_once "db_helper.php";
+require_once "login_helper.php";
 require_once "runner_helper.php";
+verify_session();
+
 $logged_in = false;
 $admin = false;
 $user = '';

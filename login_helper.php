@@ -4,63 +4,77 @@ require_once "libhash.php";
 require_once "libcookie.php";
 require_once "runner_helper.php";
 
-function login($username, $password){
-    if(!db_user_exists($username)){
-        return '1';
-    }else{
-        $pass_hash = db_get_hash($username);
-        $pass_salt = db_get_salt($username);
-        $newhash = sha256($password, $pass_salt);
-        if($pass_hash  != $newhash){
-           return '2'; 
-        }else{
-            $group = db_get_group($username);
-            $cookies = create_session($username,$group);
-           return $cookies;
-        }
-    }
-}
-
-function register($username, $password, $password2, $creditcard, $group){
-    if(db_user_exists($username)){
-        return '1';
-    }
-    if($password != $password2){
-        return '2';
-    }
-    if($group != 'user' && $group != 'admin'){
-        return '3';
-    }
-    $salt = get_rand_salt();
-    $hashed_password = sha256($password,$salt);
-    create_user($username,$password);
-    return db_create_user($username,$hashed_password,$salt,$creditcard,$group);
-}
-
-function create_user($username, $password){
-    shell_exec('sshpass -p "cdc" ssh root@runner1 "useradd '.$username.'; mkhomedir_helper '.$username.'"');
-    shell_exec('sshpass -p "cdc" ssh root@runner2 "useradd '.$username.'; mkhomedir_helper '.$username.'"');
-    shell_exec('sshpass -p "cdc" ssh root@keyescrow "useradd '.$username.'; mkhomedir_helper '.$username.'"');
-    shell_exec('sshpass -p "cdc" ssh root@git "useradd '.$username.'; mkhomedir_helper '.$username.'"');
-    shell_exec('sshpass -p "cdc" ssh root@shell "useradd '.$username.'; mkhomedir_helper '.$username.'"');
-    shell_exec('sshpass -p "cdc" ssh root@localhost "useradd '.$username.'; mkhomedir_helper '.$username.'"');
-
-    shell_exec('USER="'.$username.'" ke -s keyescrow:7654 generate');
-    shell_exec('USER="'.$username.'" ke -s keyescrow:7654 dispatch');
-
-    $key = get_public_key($username);
-    shell_exec('sshpass -p "cdc" ssh root@git "http_proxy=\"\" python /root/adduser.py '.$username.'@'.$username.'.com '.$username.' '.$username.' '.$password.'"');
-    shell_exec('http_proxy="" bash /var/www/web/runscript/addssh.sh '.$username.' '.$key);
+function login($user, $password){
+    $ldap = ldap_connect("10.3.3.2");
     
+    if ($bind = ldap_bind($ldap, $user, $password)) {
+        $_SESSION['username'] = $user;
+        $_SESSION['auth_id'] = hash("sha256", openssl_random_pseudo_bytes(200));
+        $_SESSION['start_time'] = time();
+        $_SESSION['last_request'] = time();
+        $_SESSION['logged_in'] = true;
+        $_SESSION['admin'] = false;
+        $_SESSION['file_access'] = [];
+        $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+        $_SESSION['remote_ip'] = $_SERVER['REMOTE_ADDR'];
+        $administrators = ["orin", "mushnik"];
+        foreach ($administrators as $admin) {
+            if (strcasecmp($admin, $user) == 0) {
+                $_SESSION['admin'] = true;
+            }
+        }
+        session_regenerate_id(true);
+    } else {
+        return '1';
+    }
 }
 
-function update_account($username, $password, $password2, $creditcard, $group){
-    $salt = get_rand_salt();
-    $hashed_password = sha256($password,$salt);
-    return db_update_user($username,$hashed_password,$salt,$creditcard,$group);
+function destroy_session() {
+    if (session_id() == "") {
+        session_start();
+    }
+    if ( isset( $_COOKIE[session_name()] ) ) {
+        setcookie( session_name(), "", time()-3600, "/" );
+    }
+    $_SESSION = array();
+    session_destroy();
 }
 
-function update_cc($username, $creditcard, $group){
-    return db_update_cc($username,$creditcard,$group);
+function verify_session() {
+    if (session_id() == "") {
+        session_start();
+    }
+    if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
+        if ($_SERVER['HTTP_USER_AGENT'] != $_SESSION['user_agent'] || $_SERVER['REMOTE_ADDR'] != $_SESSION['remote_ip']) {
+            destroy_session();
+            die("Bad session.");
+        }
+        if ($_SESSION['last_request'] < time() - 300 || $_SESSION['start_time'] < time() - 1800) {
+            destroy_session();
+            die("Old session.");
+        }
+        $_SESSION['last_request'] = time();
+        session_regenerate_id(true);
+    }
+}
+
+function require_authenticated() {
+    verify_session();
+    if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false) {
+        die("Not logged in.");
+    }
+}
+function check_administrator() {
+    verify_session();
+    if (!isset($_SESSION['admin']) || $_SESSION['admin'] == false) {
+        return false;
+    }
+    return true;
+}
+function require_administrator() {
+    require_authenticated();
+    if (!isset($_SESSION['admin']) || $_SESSION['admin'] == false) {
+        die("Not administrator.");
+    }
 }
 ?>
