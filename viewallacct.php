@@ -2,6 +2,8 @@
 require_once "db_helper.php";
 require_once "login_helper.php";
 require_administrator();
+
+$userlist = db_get_users();
 ?>
 <!DOCTYPE html>
 <html lang="en">

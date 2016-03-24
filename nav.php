@@ -13,11 +13,11 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li><a href="/srvstatus.php?p=runscript">Server Status</a></li>
-        <li class="active"><a href="/comments.php?l=10">Comments</a></li>
+        <li><a href="/comments.php?l=10">Comments</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <?php
-          if(!$_SESSION['logged_in']){
+          if (!$_SESSION['logged_in']) {
         ?>
             <li><a href="login.php">Login</a></li>
             <li><a href="register.php">Register</a></li>

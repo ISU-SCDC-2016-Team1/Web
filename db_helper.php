@@ -34,6 +34,32 @@ function clean_input($regex, $input) {
     return stripslashes($string);
 }
 
+function db_create_user($username, $creditcard){
+
+    global $mysqli;
+    $query="insert into credentials (username, creditcard, group) VALUES (?, ?, ?);";
+    $stmt=$mysqli->prepare($query);
+    $stmt->bind_param("sss", $username, $creditcard, "user");
+      if(!$stmt->execute()){
+        return false;
+    }
+    return true;
+}
+
+function db_get_group($username) {
+    global $mysqli;
+    $query="select group from credentials where username=?";
+    $stmt=$mysqli->prepare($query);
+    $stmt->bind_param("s", $username);
+    $group = NULL;
+    $stmt->bind_result($group);
+    if(!$stmt->fetch()){
+        $group ="";
+    }
+
+    return $group;
+}
+
 function db_get_creditcard($username) {
 
     global $mysqli;
@@ -50,24 +76,25 @@ function db_get_creditcard($username) {
 }
 
 function db_get_users(){
-
     global $mysqli;
-    $query="select * from credentials";
-    $users = array();
-    $result=mysql_query($query);
-
-    while ($row = mysql_fetch_assoc($result)) {
-        $users[] = $row["username"];
+    $query="SELECT user FROM credentials;";
+    $stmt = $mysqli->prepare($query);
+    $stmt->execute();
+    $user = NULL;
+    $users = [];
+    $stmt->bind_result($user);
+    while ($stmt->fetch()) {
+        $users[] = $user;
+      }
     }
 
-    mysql_close();
     return $users;
 }
 
-function db_update_user($username,$creditcard){
+function db_update_user($username,$creditcard,$group) {
 
     global $mysqli;
-    $query="update credentials set username='?', creditcard='?' where username='?'";
+    $query="update credentials set creditcard='?', group='?' where username='?'";
     $stmt=$mysqli->prepare($query);
     $stmt->bind_param("sss", $username, $creditcard, $_SESSION['username']);
       if(!$stmt->execute()){
@@ -77,7 +104,7 @@ function db_update_user($username,$creditcard){
     return true;
 }
 
-function db_update_cc($username,$creditcard){
+function db_update_cc($username,$creditcard) {
 
     global $mysqli;
     $query="update credentials set creditcard='?' where username='?'";
@@ -97,23 +124,20 @@ function db_get_comments($num) {
     }
     global $mysqli;
     $query="SELECT c FROM comments ORDER BY id DESC LIMIT $limit";
-    error_log("$query -- $limit");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
     $comment = NULL;
     $comments = [];
     if ($stmt->bind_result($comment)) {
-    error_log("Fetching...: " . $stmt->num_rows);
     while ($stmt->fetch()) {
-        error_log("Got comment: $comment");
         $comments[] = clean_input("comments", $comment);
       }
     }
     else {
     error_log($stmt->error());
-}
+    }
 return $comments;
-    
+
 }
 
 function db_put_comment($comment) {
