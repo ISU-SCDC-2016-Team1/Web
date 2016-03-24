@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     }else{
         $user = $_GET['u'];
     }
-    if(isset($_COOKIE)){
+    if(isset($_COOKIE)) {
         $logged_in = is_logged_in($_COOKIE);
         $admin = is_admin($_COOKIE);
         $cc = db_get_creditcard($user);
@@ -24,15 +24,15 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         $public_key = get_public_key($user);
         $private_key = get_private_key($user);
         //$user = db_get_cookie_user($_COOKIE['session']);
-        
+
     }else{
         header('Location: /');
     }
     if(!$logged_in){
         header('Location: /');
     }
-    
-    
+
+
 }
 ?>
 <!DOCTYPE html>
@@ -87,7 +87,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             <li><a href="runner.php">Code Runners</a></li>
             <li><a href="viewallacct.php">Manage Users</a></li>
             <li><a href="logout.php">Logout</a></li>
-            <?php  
+            <?php
             }else{
             ?>
             <li class="active"><a href="viewacct.php?u=<?php echo $user;?>">My Account</a></li>
@@ -115,10 +115,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
           <h2>Account Info</h2>
           <table class="table">
         <tbody>
-        <tr> 
+        <tr>
         <td>Credit Card</td> <td><?php echo $cc;?></td>
         </tr>
-        <tr> 
+        <tr>
         <td>Group</td> <td><?php echo $group;?></td>
         </tr>
         </tbody>
@@ -155,7 +155,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       <hr>
 
       <footer>
-        <p>&copy; 2015 CDC Inc. <a href="/privacy.txt">privacy policy</a></p>
+        <p>&copy; 2016 CDC Inc. <a href="/privacy.txt">privacy policy</a></p>
       </footer>
     </div> <!-- /container -->
 

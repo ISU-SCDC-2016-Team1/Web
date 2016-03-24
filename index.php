@@ -127,7 +127,7 @@ if(isset($_COOKIE)){
       <hr>
 
       <footer>
-        <p>&copy; 2015 CDC Inc. <a href="/privacy.txt">privacy policy</a></p>
+        <p>&copy; 2016 CDC Inc. <a href="/privacy.txt">privacy policy</a></p>
       </footer>
     </div> <!-- /container -->
 

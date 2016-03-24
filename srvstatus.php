@@ -70,7 +70,7 @@ $runner2 = shell_exec("bash $path/runner2status.sh");
             <li><a href="runner.php">Code Runners</a></li>
             <li><a href="viewallacct.php">Manage Users</a></li>
             <li><a href="logout.php">Logout</a></li>
-            <?php  
+            <?php
             }else{
             ?>
             <li><a href="viewacct.php?u=<?php echo $user;?>">My Account</a></li>
@@ -129,7 +129,7 @@ $runner2 = shell_exec("bash $path/runner2status.sh");
       <hr>
 
       <footer>
-        <p>&copy; 2015 CDC Inc. <a href="/privacy.txt">privacy policy</a></p>
+        <p>&copy; 2016 CDC Inc. <a href="/privacy.txt">privacy policy</a></p>
       </footer>
     </div> <!-- /container -->
 
