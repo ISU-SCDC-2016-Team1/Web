@@ -55,9 +55,11 @@ function db_get_users(){
     $query="select * from credentials";
     $users = array();
     $result=mysql_query($query);
+
     while ($row = mysql_fetch_assoc($result)) {
         $users[] = $row["username"];
     }
+
     mysql_close();
     return $users;
 }
@@ -94,7 +96,7 @@ function db_get_comments($num) {
         $limit = 10;
     }
     global $mysqli;
-    $query="SELECT comment FROM comments ORDER BY id DESC LIMIT ?";
+    $query="SELECT c FROM comments ORDER BY id DESC LIMIT ?";
     $stmt = $conn->prepare()
     $stmt->bind_param("i", $limit);
     $comment = NULL;
