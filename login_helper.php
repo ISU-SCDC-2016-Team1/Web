@@ -14,7 +14,6 @@ function login($user, $password){
         $_SESSION['last_request'] = time();
         $_SESSION['logged_in'] = true;
         $_SESSION['admin'] = false;
-        $_SESSION['file_access'] = [];
         $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         $_SESSION['remote_ip'] = $_SERVER['REMOTE_ADDR'];
         $administrators = ["orin", "mushnik"];
