@@ -1,8 +1,8 @@
 <?php
     $M_host = 'localhost';
-    $M_user = '';
-    $M_password = '';
-    $M_database = '';
+    $M_user = 'web';
+    $M_password = '7f0DlNcl3Lv5rQ6sHOuq';
+    $M_database = 'web';
 
     global $mysqli;
 
@@ -18,13 +18,13 @@
     unset($M_database);
 
 function clean_input($regex, $input) {
+    $lstring = $input;
     if ($regex != "comments"){
         $lstring = preg_replace($regex, '', str_replace(chr(0), '', $input));
     }
     else{
-        $lstring = preg_replace(str_replace(chr(0), '', $input));
+        $lstring = str_replace(chr(0), '', $input);
     }
-    $lstring = preg_replace($regex, '', str_replace(chr(0), '', $input));
     $string = stripslashes(strip_tags($lstring));
     while ($string != $lstring) {
         $lstring = $string;
@@ -96,25 +96,33 @@ function db_get_comments($num) {
         $limit = 10;
     }
     global $mysqli;
-    $query="SELECT c FROM comments ORDER BY id DESC LIMIT ?";
-    $stmt = $conn->prepare()
-    $stmt->bind_param("i", $limit);
+    $query="SELECT c FROM comments ORDER BY id DESC LIMIT $limit";
+    error_log("$query -- $limit");
+    $stmt = $mysqli->prepare($query);
+    $stmt->execute();
     $comment = NULL;
     $comments = [];
-    $stmt->bind_result($comment)
-    while($stmt->fetch()){
+    if ($stmt->bind_result($comment)) {
+    error_log("Fetching...: " . $stmt->num_rows);
+    while ($stmt->fetch()) {
+        error_log("Got comment: $comment");
         $comments[] = clean_input("comments", $comment);
       }
-    return $comments;
+    }
+    else {
+    error_log($stmt->error());
+}
+return $comments;
+    
 }
 
 function db_put_comment($comment) {
-    $value = clean_input("comments", $comment)
+    $value = clean_input("comments", $comment);
     global $mysqli;
     $sql = "INSERT INTO comments (c) VALUES (?)";
     $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("s", $value);
-    $stmt->execute()
+    $stmt->execute();
     return $result;
 }
 ?>

@@ -1,13 +1,11 @@
 <?php
 require_once "db_helper.php";
-require_once "libhash.php";
-require_once "libcookie.php";
 require_once "runner_helper.php";
 
 function login($user, $password){
-    $ldap = ldap_connect("10.3.3.2");
+    $ldap = ldap_connect("10.4.4.2");
 
-    if ($bind = ldap_bind($ldap, $user, $password)) {
+    if ($bind = ldap_bind($ldap, "cn=$user,cn=users,dc=team1,dc=isucdc,dc=com", $password)) {
         $_SESSION['username'] = $user;
         $_SESSION['auth_id'] = hash("sha256", openssl_random_pseudo_bytes(200));
         $_SESSION['start_time'] = time();

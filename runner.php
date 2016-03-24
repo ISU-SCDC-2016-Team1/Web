@@ -2,53 +2,8 @@
 require_once "db_helper.php";
 require_once "login_helper.php";
 require_once "runner_helper.php";
-require_administrator();
+require_authenticated();
 
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
-    if(isset($_COOKIE)){
-        $logged_in = is_logged_in($_COOKIE);
-        $admin = is_admin($_COOKIE);
-        $group = db_get_group($user);
-
-    }else{
-        header('Location: /');
-    }
-    if(!$logged_in){
-        header('Location: /');
-    }
-}else{
-    //POST
-    if(isset($_POST['project']) && isset($_POST['runner'])){
-        if(isset($_COOKIE)){
-            $logged_in = is_logged_in($_COOKIE);
-            $admin = is_admin($_COOKIE);
-            if(isset($_POST['user'])){
-                $user = $_POST['user'];
-            }else{
-                $user = db_get_cookie_user($_COOKIE['session']);
-            }
-            $group = db_get_group($user);
-        }else{
-            header('Location: /');
-        }
-
-        $project = $_POST['project'];
-        $runner = $_POST['runner'];
-        if(isset($_POST['button'])){
-            $fnt = $_POST['button'];
-        }else{
-            header('Location: /');
-        }
-        if($fnt != ''){
-            if($fnt == 'stdin' && isset($_POST['stdin'])){
-                $stdin = $_POST['stdin'];
-            }
-            $result = do_runner($fnt,$project,$runner,$user,$stdin);
-        }
-    }else{
-        header('Location: /');
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
       </div>
       <hr>
       <div class="row">
-       <form class="form-signin" method="post" action="/runner.php">
+       <form class="form" method="post" action="/runner.php">
         <div class="col-md-6">
         <div class="aaa">
         <label for="input1" class="sr-only">Project</label>

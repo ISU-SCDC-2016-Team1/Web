@@ -24,14 +24,14 @@
         <?php
           } elseif($_SESSION['admin']) {
         ?>
-            <li><a href="viewacct.php?u=<?php echo $user;?>">My Account</a></li>
+            <li><a href="viewacct.php?u=<?php echo $_SESSION['username'];?>">My Account</a></li>
             <li><a href="runner.php">Code Runners</a></li>
             <li><a href="viewallacct.php">Manage Users</a></li>
             <li><a href="logout.php">Logout</a></li>
         <?php
           } else {
         ?>
-          <li><a href="viewacct.php?u=<?php echo $user;?>">My Account</a></li>
+          <li><a href="viewacct.php?u=<?php echo $_SESSION['username'];?>">My Account</a></li>
           <li><a href="runner.php">Code Runners</a></li>
           <li><a href="logout.php">Logout</a></li>
         <?php
