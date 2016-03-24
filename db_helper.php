@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
      
     $M_host = 'localhost';
     $M_user = '';
@@ -10,6 +11,27 @@
     $mysqli = new mysqli($M_host, $M_user, $M_password, $M_database);
     if ($mysqli->connect_errno) {
         die("Failed to connect to MySQL: " . $mysqli->connect_error);
+=======
+require_once "login_helper.php";
+verify_session();
+
+function db_get_hash($username) {
+    try{
+        $user = "web";
+        $pass = "7f0DlNcl3Lv5rQ6sHOuq";
+        $db = "web";
+        $host = "localhost";
+        mysql_connect($host,$user,$pass);
+        mysql_select_db($db) or die("Unable to select database");
+        $query="select password from credentials where username=?";
+        $conn->prepare($query);
+        $stmt->bind_param("s", $username);
+        $stmt->bind_result($hash);
+        mysql_close();
+        return $hash;
+    }catch(Exception $e){
+        return 'idk';
+>>>>>>> ca0eee024fea1449f0c93cfa4eb1cca5a3366432
     }
     $mysqli->set_charset("utf8");
 

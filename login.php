@@ -1,6 +1,7 @@
 <?php
-require_once "libcookie.php";
-require_once"login_helper.php";
+require_once "login_helper.php";
+verify_session();
+
 $login_error = false;
 $login_error_msg = '';
 $logged_in = false;

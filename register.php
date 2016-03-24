@@ -1,3 +1,3 @@
 <?php
-  header('Location: ldap.team1.isucdc.com');
+	header('Location: ldap.team1.isucdc.com');
 ?>
