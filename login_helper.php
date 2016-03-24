@@ -6,7 +6,7 @@ require_once "runner_helper.php";
 
 function login($user, $password){
     $ldap = ldap_connect("10.3.3.2");
-    
+
     if ($bind = ldap_bind($ldap, $user, $password)) {
         $_SESSION['username'] = $user;
         $_SESSION['auth_id'] = hash("sha256", openssl_random_pseudo_bytes(200));
@@ -57,19 +57,29 @@ function verify_session() {
     }
 }
 
+function check_authenticated() {
+    verify_session();
+    if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false) {
+        return false;
+    }
+    return true;
+}
+
+function check_administrator() {
+    verify_session();
+    if (!check_authenticated() || !isset($_SESSION['admin']) || $_SESSION['admin'] == false) {
+        return false;
+    }
+    return true;
+}
+
 function require_authenticated() {
     verify_session();
     if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false) {
         die("Not logged in.");
     }
 }
-function check_administrator() {
-    verify_session();
-    if (!isset($_SESSION['admin']) || $_SESSION['admin'] == false) {
-        return false;
-    }
-    return true;
-}
+
 function require_administrator() {
     require_authenticated();
     if (!isset($_SESSION['admin']) || $_SESSION['admin'] == false) {

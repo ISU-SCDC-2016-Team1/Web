@@ -2,17 +2,8 @@
 require_once "db_helper.php";
 require_once "login_helper.php";
 require_once "runner_helper.php";
-verify_session();
+require_administrator();
 
-$logged_in = false;
-$admin = false;
-$user = '';
-$group = '';
-$fnt = '';
-$project = '';
-$runner = '';
-$result = '';
-$stdin = '';
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
     if(isset($_COOKIE)){
         $logged_in = is_logged_in($_COOKIE);

@@ -1,17 +1,6 @@
 <?php
 require_once "login_helper.php";
 verify_session();
-
-$logged_in = false;
-$admin = false;
-$user = '';
-if(isset($_COOKIE)){
-    $logged_in = is_logged_in($_COOKIE);
-    $admin = is_admin($_COOKIE);
-    $user = db_get_cookie_user($_COOKIE['session']);
-}
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +13,7 @@ if(isset($_COOKIE)){
       <!-- Example row of columns -->
       <div class="row">
         <?php
-        if(!$logged_in){
+          if(!$logged_in){
         ?>
         <div class="col-md-4">
           <h2>Login</h2>

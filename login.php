@@ -2,18 +2,11 @@
 require_once "login_helper.php";
 verify_session();
 
-$login_error = false;
-$login_error_msg = '';
-$logged_in = false;
-$admin = false;
-if(isset($_COOKIE)){
-    $logged_in = is_logged_in($_COOKIE);
-    $admin = is_admin($_COOKIE);
-}
-if($logged_in){
+if(check_authenticated()){
     header('Location: /');
-} else {
-
+    die();
+}
+/*
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if(isset($_POST['username']) && isset($_POST['password'])){
         //process login
@@ -38,6 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $login_error_msg = 'did not specify both username and password';
     }
 }
+*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,6 +74,3 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
   </body>
 </html>
-<?php
-}
-?>

@@ -5,7 +5,6 @@ verify_session();
 
 $comments = db_get_comments($limit);
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
