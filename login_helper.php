@@ -23,9 +23,10 @@ function login($user, $password){
             }
         }
         session_regenerate_id(true);
-    } else {
-        return '1';
+        return true;
     }
+    
+    return false;
 }
 
 function destroy_session() {

@@ -1,38 +1,39 @@
 <?php
 require_once "login_helper.php";
+require_once "db_helper.php";
 verify_session();
 
 if(check_authenticated()){
     header('Location: /');
     die();
 }
-/*
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    if(isset($_POST['username']) && isset($_POST['password'])){
-        //process login
-        $result = login($_POST['username'],$_POST['password']);
-        if($result == '1'){
-            $login_error = true;
-            $login_error_msg = 'user does not exist';
-        }elseif($result == '2'){
-            $login_error = true;
-            $login_error_msg = 'incorrect password';
-        }else{
-            //login successful
-            //result is the cookie array
-            setcookie('session',$result['session'],0,'/');
-            setcookie('group',$result['group'],0,'/');
-            //TODO redirect to viewacct
-            header('Location: /');
-        }
 
-    }else{
-        $login_error = true;
-        $login_error_msg = 'did not specify both username and password';
+$login_error = false;
+$login_error_msg = '';
+
+if (isset($_POST['username']) || isset($_POST['password'])) {
+  $username = clean_input('/[^a-zA-Z0-9]/', $_POST['username']);
+  $password = $_POST['password'];
+
+  if (!isset($_POST['password'])) {
+    $password = '';
+  }
+
+  if ($username == '' || $password == '') {
+    $login_error = true;
+    $login_error_msg = 'Missing either username or password.';
+  } else {
+    if (login($username, $password)) {
+      header('Location: /');
+      die();
+    } else {
+      $login_error = true;
+      $login_error_msg = 'Invalid username or password.';
     }
+  }
 }
-*/
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -57,7 +58,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if($login_error){
     ?>
     <div class="container" style="text-align: center;">
-        <p>Error: <?php echo $login_error_msg;?></p>
+        <p>Error: <?php echo $login_error_msg; ?></p>
     </div>
     <?php
     }
