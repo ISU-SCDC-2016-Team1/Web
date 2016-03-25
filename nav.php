@@ -1,3 +1,7 @@
+<?php
+require_once 'login_helper.php';
+verify_session();
+?>
 <!-- Static navbar -->
 <nav class="navbar navbar-default navbar-static-top">
   <div class="container">
@@ -17,7 +21,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <?php
-          if (!$_SESSION['logged_in']) {
+          if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false) {
         ?>
             <li><a href="login.php">Login</a></li>
             <li><a href="register.php">Register</a></li>
