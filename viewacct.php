@@ -23,16 +23,14 @@ if (!check_administrator()) {
 }
 
 $cc = db_get_creditcard($user);
-$group = "user"
-$administrators = ["orin", "mushnik"];
-foreach ($administrators as $admin) {
-    if (strcasecmp($admin, $user) == 0) {
-        $group = "admin";
-    }
+$group = "user";
+
+if (file_get_contents("https://ldap.team1.isucdc.com/isAdmin.ashx?user=$user") == "True") {
+	$group = "admin";
 }
 
 $public_key = get_public_key($user);
-$private_key = get_public_key($user);
+$private_key = get_private_key($user);
 
 ?>
 <!DOCTYPE html>

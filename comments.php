@@ -12,6 +12,11 @@ if (isset($_GET['l'])) {
   }
 }
 
+
+if (isset($_POST['comment'])) {
+	db_put_comment(clean_input("comments", $_POST['comment']));
+}
+
 $comments = db_get_comments($limit);
 
 ?>

@@ -17,11 +17,11 @@ verify_session();
         </div>
         <div class="col-md-6">
           <h2>Runner 1</h2>
-          <iframe seamless="seamless" src="http://runner1.isucdc.com:8765/"></iframe>
+          <?php echo file_get_contents('http://runner1.team1.isucdc.com:8765'); ?>
         </div>
         <div class="col-md-6">
           <h2>Runner 2</h2>
-            <iframe seamless="seamless" src="http://runner2.isucdc.com:8765/"></iframe>
+            <?php echo file_get_contents("http://runner2.team1.isucdc.com:8765/"); ?>
         </div>
 
       <hr>

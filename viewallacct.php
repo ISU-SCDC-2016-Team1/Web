@@ -1,6 +1,7 @@
 <?php
 require_once "db_helper.php";
 require_once "login_helper.php";
+
 require_administrator();
 
 $userlist = db_get_users();

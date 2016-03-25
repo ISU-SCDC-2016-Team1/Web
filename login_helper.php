@@ -2,7 +2,8 @@
 require_once "db_helper.php";
 require_once "runner_helper.php";
 
-function login($user, $password){
+function login($u, $password){
+    $user = strtolower($u);
     $ldap = ldap_connect("10.4.4.2");
 
     if ($bind = ldap_bind($ldap, "cn=$user,cn=users,dc=team1,dc=isucdc,dc=com", $password)) {
@@ -47,14 +48,17 @@ function verify_session() {
     if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
         if ($_SERVER['HTTP_USER_AGENT'] != $_SESSION['user_agent'] || $_SERVER['REMOTE_ADDR'] != $_SESSION['remote_ip']) {
             destroy_session();
-            die("Bad session.");
-        }
+            header("Location: /login.php");
+	    die("");
+	}
         if ($_SESSION['last_request'] < time() - 300 || $_SESSION['start_time'] < time() - 900) {
             destroy_session();
-            die("Old session.");
-        }
+            header("Location: /login.php");
+	    die("");
+	}
         $_SESSION['last_request'] = time();
         $password = $_SESSION['password'];
+	$user = $_SESSION['username'];
         $_SESSION['token'] = shell_exec("echo $password | ke -s 10.3.3.2:7654 token -u $user 2>/dev/null | grep Token | sed 's/Token: //g'");
         session_regenerate_id(true);
     }
@@ -79,14 +83,16 @@ function check_administrator() {
 function require_authenticated() {
     verify_session();
     if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false) {
-        die("Not logged in.");
+	header("Location: /login.php");
+        die("");
     }
 }
 
 function require_administrator() {
     require_authenticated();
     if (!isset($_SESSION['admin']) || $_SESSION['admin'] == false) {
-        die("Not administrator.");
+	header("Location: /login.php");
+        die("");
     }
 }
 ?>

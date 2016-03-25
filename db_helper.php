@@ -37,9 +37,12 @@ function clean_input($regex, $input) {
 function db_create_user($username, $creditcard){
 
     global $mysqli;
-    $query="insert into credentials (username, creditcard, group) VALUES (?, ?, ?);";
-    $stmt=$mysqli->prepare($query);
-    $stmt->bind_param("sss", $username, clean_input('/[^0-9]/', $creditcard), "user");
+    $query="insert into credentials (username, creditcard) VALUES (?, ?);";
+    $stmt = $mysqli->prepare($query);
+    if ($stmt === false) {
+return false;
+}
+$stmt->bind_param("ss", $username, $creditcard);
       if(!$stmt->execute()){
         return false;
     }
@@ -63,30 +66,29 @@ function db_get_group($username) {
 function db_get_creditcard($username) {
 
     global $mysqli;
-    $query="select creditcard from credentials where username=?";
-    $stmt=$mysqli->prepare($query);
-    $stmt->bind_param("s", $username);
-    $cc = NULL;
-    $stmt->bind_result($cc);
-    if(!$stmt->fetch()){
-        $cc ="";
-    }
+    $query="select username,creditcard from credentials;";
+    $stmt = $mysqli->query($query);
 
-    return $cc;
+	while ($stmt && $row = $stmt->fetch_assoc()) {
+		if ($row['username'] == $username) {
+		return $row['creditcard'];
+		}
+}
+
+	return "No Creditcard On File";
+
 }
 
 function db_get_users(){
     global $mysqli;
-    $query="SELECT user FROM credentials;";
-    $stmt = $mysqli->prepare($query);
-    $stmt->execute();
+    $query="SELECT username FROM credentials;";
+    $stmt = $mysqli->query($query);
     $user = NULL;
     $users = [];
-    $stmt->bind_result($user);
-    while ($stmt->fetch()) {
-        $users[] = $user;
+
+    while ($stmt && $user = $stmt->fetch_assoc()) {
+        $users[] = $user["username"];
       }
-    }
 
     return $users;
 }
@@ -94,7 +96,7 @@ function db_get_users(){
 function db_update_user($username,$creditcard,$group) {
 
     global $mysqli;
-    $query="update credentials set creditcard='?' where username='?'";
+    $query="update credentials set creditcard=? where username=?";
     $stmt=$mysqli->prepare($query);
     $stmt->bind_param("sss", $username, $creditcard, $_SESSION['username']);
       if(!$stmt->execute()){
@@ -107,10 +109,16 @@ function db_update_user($username,$creditcard,$group) {
 function db_update_cc($username, $creditcard) {
 
     global $mysqli;
-    $query="update credentials set creditcard='?' where username='?'";
+    $query="update credentials set creditcard=? where username=?";
     $stmt=$mysqli->prepare($query);
-    $stmt->bind_param("ss", clean_input('/[^a-zA-Z0-9]/', $creditcard), $username);
+    if ($stmt === false) {
+	error_log("Error with query: $query");
+	return false;
+	}
+
+    $stmt->bind_param("ss", $creditcard, $username);
       if(!$stmt->execute()){
+	error_log("error");
           return false;
       }
 
@@ -147,6 +155,5 @@ function db_put_comment($comment) {
     $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("s", $value);
     $stmt->execute();
-    return $result;
 }
 ?>

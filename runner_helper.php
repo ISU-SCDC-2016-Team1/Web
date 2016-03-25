@@ -42,7 +42,7 @@ function do_runner($f,$p,$r,$u,$s) {
     $fnt = clean_input('/[^a-zA-Z0-9]/', $f);
     $project = clean_input('/[^a-zA-Z0-9 _-]/', $p);
     $runner = clean_input('/[^a-zA-Z0-9]/', $r);
-    $user = clean_input('/[^a-zA-Z0-9]/', $r)
+    $user = clean_input('/[^a-zA-Z0-9]/', $r);
 
     exec("keyescrow get -t /tmp -u $user -t " . $_SESSION['token']);
     if($fnt == 'stdin'){
