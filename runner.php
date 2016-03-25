@@ -4,6 +4,12 @@ require_once "login_helper.php";
 require_once "runner_helper.php";
 require_authenticated();
 
+$fnt = "";
+
+if (isset($_POST['project'])) {
+	$fnt = do_runner($_POST['button'], $_POST['project'], $_POST['runner'], $_SESSION['username'], $_POST['redirect'], $_POST['method']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,13 +29,19 @@ require_authenticated();
         <div class="col-md-6">
         <div class="aaa">
         <label for="input1" class="sr-only">Project</label>
-        <input name="project" type="text" id="input1" class="form-control" placeholder="Project" value="<?php echo $project;?>" required>
+        <input name="project" type="text" id="input1" class="form-control" placeholder="Project" required>
         <label for="input2" class="sr-only">Runner</label>
         <select name="runner">
           <option value="runner1">Runner 1</option>
           <option value="runner2">Runner 2</option>
         </select>
-        <textarea id="input3" name="stdin" class="form-control" rows="5" placeholder="Stdin(optional)"></textarea>
+        <label for="input2" class="sr-only">Redirect</label>
+        <select name="redirect">
+          <option value="normal">Normal</option>
+          <option value="none">None</option>
+          <option value="all">All</option>
+        </select>
+        <textarea id="input3" name="stdin" class="form-control" rows="5" placeholder="Stdin - Only for set STDIN"></textarea>
        </div>
        </div>
         <div class="col-md-6">
@@ -38,8 +50,8 @@ require_authenticated();
         <button name="button" value="clean" class="btn btn-lg btn-primary btn-block" type="submit">Clean</button>
         <button name="button" value="build" class="btn btn-lg btn-primary btn-block" type="submit">Build</button>
         <button name="button" value="run" class="btn btn-lg btn-primary btn-block" type="submit">Run</button>
-        <button name="button" value="stdin" class="btn btn-lg btn-primary btn-block" type="submit">Set Stdin</button>
-        <button name="button" value="stdout" class="btn btn-lg btn-primary btn-block" type="submit">Print Stdout</button>
+        <button name="button" value="stdin" class="btn btn-lg btn-primary btn-block" type="submit">Set STDIN</button>
+        <button name="button" value="get" class="btn btn-lg btn-primary btn-block" type="submit">Get STDOUT</button>
         </div>
        </div>
       </form>
