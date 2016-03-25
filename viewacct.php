@@ -73,7 +73,7 @@ $private_key = get_public_key($user);
         <div class="col-md-6">
           <h2>Edit Account</h2>
        <h3 class="form-signin-heading">Change Password</h3>
-       <a href="https://google.com">Please go here to change your password</a>.
+       <a href="https://ldap.team1.isucdc.com">Please go here to change your password</a>.
       </form>
        <form class="form-signin" method="post" action="/updatecc.php">
        <h3 class="form-signin-heading">Change Credit Card</h3>
