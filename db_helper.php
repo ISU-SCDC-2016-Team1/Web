@@ -39,7 +39,7 @@ function db_create_user($username, $creditcard){
     global $mysqli;
     $query="insert into credentials (username, creditcard, group) VALUES (?, ?, ?);";
     $stmt=$mysqli->prepare($query);
-    $stmt->bind_param("sss", $username, $creditcard, "user");
+    $stmt->bind_param("sss", $username, clean_input('/[^0-9]/', $creditcard), "user");
       if(!$stmt->execute()){
         return false;
     }
@@ -104,12 +104,12 @@ function db_update_user($username,$creditcard,$group) {
     return true;
 }
 
-function db_update_cc($username,$creditcard) {
+function db_update_cc($username, $creditcard) {
 
     global $mysqli;
     $query="update credentials set creditcard='?' where username='?'";
     $stmt=$mysqli->prepare($query);
-    $stmt->bind_param("ss", $creditcard, $username);
+    $stmt->bind_param("ss", clean_input('/[^0-9]/', $creditcard), $username);
       if(!$stmt->execute()){
           return false;
       }

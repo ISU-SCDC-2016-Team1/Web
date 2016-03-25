@@ -7,7 +7,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $u = $_POST['username'];
         $group = $_POST['group'];
         $cc = $_POST['creditcard'];
-        update_cc($u,$cc,$group);
+        db_update_cc($u, $cc, $group);
         header('Location: /viewacct.php?u='.$u);
     }else{
         header('Location: /');
