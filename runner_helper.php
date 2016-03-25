@@ -60,17 +60,17 @@ function do_runner($f,$p,$r,$u,$re,$m,$s) {
 		shell_exec("rm /tmp/$user.priv");
         return $out;
     } else if ($fnt == 'get') {
-		$cmd = "crconsole -u $user -i /tmp/$user.priv -p $project -r $runner get -m $method 2>&1"
+		$cmd = "crconsole -u $user -i /tmp/$user.priv -p $project -r $runner get -m $method 2>&1";
         $out = shell_exec($cmd);
 		shell_exec("rm /tmp/$user.priv");
         return $out;
 	} else if ($fnt == 'run') {
-		$cmd = "crconsole -u $user -i /tmp/$user.priv -p $project -r $runner run -x $redirect 2>&1"
+		$cmd = "crconsole -u $user -i /tmp/$user.priv -p $project -r $runner run -x $redirect 2>&1";
         $out = shell_exec($cmd);
 		shell_exec("rm /tmp/$user.priv");
         return $out;
 	} else {
-		$cmd = "crconsole -u $user -i /tmp/$user.priv -p $project -r $runner $fnt 2>&1"
+		$cmd = "crconsole -u $user -i /tmp/$user.priv -p $project -r $runner $fnt 2>&1";
         $out = shell_exec($cmd);
 		shell_exec("rm /tmp/$user.priv");
         return $out;
