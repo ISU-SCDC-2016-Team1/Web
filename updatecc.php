@@ -5,7 +5,7 @@ require_authenticated();
 
 if(isset($_POST['username']) || isset($_POST['creditcard'])){
     $user = clean_input('/[^a-zA-Z0-9]/', $_POST['username']);
-    $cc = clean_input('/[^a-zA-Z0-9]/', $_POST['username']);
+    $cc = clean_input('/[^a-zA-Z0-9]/', $_POST['creditcard']);
 
     $userlist = db_get_users();
     $found = false;
