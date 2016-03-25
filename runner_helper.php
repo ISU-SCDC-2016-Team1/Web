@@ -1,7 +1,8 @@
 <?php
 
-function get_public_key($user){
-    $cmd ='USER="'.$user.'" ke -s 192.168.1.11:7654 get';
+function get_public_key($username) {
+    $user = clean_input('/[^a-zA-Z0-9]/', $username);
+    $cmd = "ke -s 10.3.3.2:7654 get -u $user -t " . $_SESSION['token'];
     $output = shell_exec($cmd);
     $lines = explode("\n",$output);
     $out = '';
@@ -16,18 +17,19 @@ function get_public_key($user){
     return $out;
 }
 
-function get_private_key($user){
-    $cmd ='USER="'.$user.'" ke -s 192.168.1.11:7654 get';
+function get_private_key($username){
+    $user = clean_input('/[^a-zA-Z0-9]/', $username);
+    $cmd ="ke -s 10.3.3.2:7654 get -u $user -t " . $_SESSION['token'];
     $output = shell_exec($cmd);
     $lines = explode("\n",$output);
     $out = '';
     $i = 0;
     foreach($lines as $line){
         if($i > 4){
-            if($i == 5){
+            if($i == 5) {
                 $a = substr($line,13);
                 $out = $out.$a.PHP_EOL;
-            }elseif($line != ''){
+            } elseif ($line != '') {
                 $out = $out.$line.PHP_EOL;
             }
         }
@@ -36,11 +38,21 @@ function get_private_key($user){
     return $out;
 }
 
-function do_runner($fnt,$project,$runner,$user,$stdin){
-    exec("USER=\"$user\" keyescrow get -t /tmp");
+function do_runner($f,$p,$r,$u,$s) {
+    $fnt = clean_input('/[^a-zA-Z0-9]/', $f);
+    $project = clean_input('/[^a-zA-Z0-9 _-]/', $p);
+    $runner = clean_input('/[^a-zA-Z0-9]/', $r);
+    $user = clean_input('/[^a-zA-Z0-9]/', $r)
+
+    exec("keyescrow get -t /tmp -u $user -t " . $_SESSION['token']);
     if($fnt == 'stdin'){
+        shell_exec('rm -rf /tmp/stdin_'.$user);
         shell_exec('mkdir /tmp/stdin_'.$user);
-        shell_exec('echo "'.$stdin.'" > /tmp/stdin_'.$user.'/stdin.tmp');
+
+        $f = fopen('/tmp/stdin_'.$user.'/stdin.tmp', 'w');
+        fwrite($f, $stdin);
+        fclose($f);
+
         $cmd = 'echo \'stdin "/tmp/stdin_'.$user.'/stdin.tmp", :'.$project.' => :'.$runner.'\' | USER="'.$user.'" crconsole 2>&1';
         $out = shell_exec($cmd);
         return $out;

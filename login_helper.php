@@ -14,16 +14,18 @@ function login($user, $password){
         $_SESSION['admin'] = false;
         $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         $_SESSION['remote_ip'] = $_SERVER['REMOTE_ADDR'];
-        $administrators = ["orin", "mushnik"];
-        foreach ($administrators as $admin) {
-            if (strcasecmp($admin, $user) == 0) {
-                $_SESSION['admin'] = true;
-            }
+        $_SESSION['password'] = $password;
+        $_SESSION['token'] = shell_exec("echo $password | ke -s 10.3.3.2:7654 token -u $user | grep Token | sed 's/Token: //g'");
+
+        $is_admin = file_get_contents("https://ldap.team1.isucdc.com/isAdmin.ashx?user=$user");
+        if (strcasecmp($is_admin, "True") == 0) {
+            $_SESSION['admin'] = true;
         }
+
         session_regenerate_id(true);
         return true;
     }
-    
+
     return false;
 }
 
@@ -47,11 +49,13 @@ function verify_session() {
             destroy_session();
             die("Bad session.");
         }
-        if ($_SESSION['last_request'] < time() - 300 || $_SESSION['start_time'] < time() - 1800) {
+        if ($_SESSION['last_request'] < time() - 300 || $_SESSION['start_time'] < time() - 900) {
             destroy_session();
             die("Old session.");
         }
         $_SESSION['last_request'] = time();
+        $password = $_SESSION['password'];
+        $_SESSION['token'] = shell_exec("echo $password | ke -s 10.3.3.2:7654 token -u $user 2>/dev/null | grep Token | sed 's/Token: //g'");
         session_regenerate_id(true);
     }
 }

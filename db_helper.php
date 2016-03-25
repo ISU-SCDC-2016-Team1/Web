@@ -94,7 +94,7 @@ function db_get_users(){
 function db_update_user($username,$creditcard,$group) {
 
     global $mysqli;
-    $query="update credentials set creditcard='?', group='?' where username='?'";
+    $query="update credentials set creditcard='?' where username='?'";
     $stmt=$mysqli->prepare($query);
     $stmt->bind_param("sss", $username, $creditcard, $_SESSION['username']);
       if(!$stmt->execute()){
@@ -109,7 +109,7 @@ function db_update_cc($username, $creditcard) {
     global $mysqli;
     $query="update credentials set creditcard='?' where username='?'";
     $stmt=$mysqli->prepare($query);
-    $stmt->bind_param("ss", clean_input('/[^0-9]/', $creditcard), $username);
+    $stmt->bind_param("ss", clean_input('/[^a-zA-Z0-9]/', $creditcard), $username);
       if(!$stmt->execute()){
           return false;
       }

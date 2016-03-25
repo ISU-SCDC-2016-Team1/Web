@@ -1,20 +1,31 @@
 <?php
-
 require_once "login_helper.php";
 require_authenticated();
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    if(isset($_POST['username']) && isset($_POST['creditcard']) && isset($_POST['group'])){
-        $u = $_POST['username'];
-        $group = $_POST['group'];
-        $cc = $_POST['creditcard'];
-        db_update_cc($u, $cc, $group);
-        header('Location: /viewacct.php?u='.$u);
-    }else{
-        header('Location: /');
+
+
+if(isset($_POST['username']) || isset($_POST['creditcard'])){
+    $user = clean_input('/[^a-zA-Z0-9]/', $_POST['username']);
+    $cc = clean_input('/[^a-zA-Z0-9]/', $_POST['username']);
+
+    $userlist = db_get_users();
+    $found = false;
+    foreach($userlist as $u){
+      if ($user == $u) {
+        $found = true;
+      }
     }
-}else{
-    header('Location: /');
-}
 
+    if (!$found) {
+        $user = $_SESSION['username'];
+    }
 
+    if (!check_administrator() || $user == '') {
+      $user = $_SESSION['username'];
+    }
+
+    db_update_cc($user, $cc);
+    header('Location: /viewacct.php?u='.$user);
+  } else {
+    die("Error processing request.");
+  }
 ?>

@@ -3,7 +3,7 @@ require_once "login_helper.php";
 require_once "db_helper.php";
 verify_session();
 
-if(check_authenticated()){
+if (check_authenticated()) {
     header('Location: /');
     die();
 }

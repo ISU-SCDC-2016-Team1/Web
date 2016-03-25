@@ -11,9 +11,7 @@ require_authenticated();
     <?php require_once 'head.php'; ?>
   </head>
   <body>
-
         <?php require_once 'nav.php'; ?>
-
  <div class="row">
         <div style="text-align: center;" class="col-md-12">
           <h2>Run Some Code</h2>
@@ -27,7 +25,10 @@ require_authenticated();
         <label for="input1" class="sr-only">Project</label>
         <input name="project" type="text" id="input1" class="form-control" placeholder="Project" value="<?php echo $project;?>" required>
         <label for="input2" class="sr-only">Runner</label>
-        <input name="runner" type="text" id="input2" class="form-control" placeholder="Runner" value="<?php echo $runner;?>" required>
+        <select name="runner">
+          <option value="runner1">Runner 1</option>
+          <option value="runner2">Runner 2</option>
+        </select>
         <textarea id="input3" name="stdin" class="form-control" rows="5" placeholder="Stdin(optional)"></textarea>
        </div>
        </div>
@@ -53,7 +54,7 @@ require_authenticated();
       <p>
       <?php
       if($fnt != ''){
-      echo $result;
+        echo $result;
       }
       ?>
       </p>
