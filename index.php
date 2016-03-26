@@ -53,7 +53,8 @@ verify_session();
         ?>
       </div>
       <div class="container" style="text-align: center; margin-top: 30px;">
-        <img style="border:  40px solid transparent; border-image: url('/logo.png');" src="/dist/img/real_hackers.png"/>
+        <h2>A tribute to <a href="https://twitter.com/tompohl/status/713561371791601664">@CPCharron</a>, friend of @tompohl.</h2>
+        <img style="border:  40px solid transparent; border-image: url('/logo.png'); height: 600px;" src="/dist/img/real_hackers.png"/>
       </div>
 
       <hr>
