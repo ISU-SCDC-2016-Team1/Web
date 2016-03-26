@@ -4,10 +4,12 @@ require_once "login_helper.php";
 require_once "runner_helper.php";
 require_authenticated();
 
-$fnt = "";
+$fnt = $_POST['button'];
+$result = "";
 
-if (isset($_POST['project'])) {
-	$fnt = do_runner($_POST['button'], $_POST['project'], $_POST['runner'], $_SESSION['username'], $_POST['redirect'], $_POST['method']);
+if (isset($_POST['button']) && isset($_POST['project'])) {
+	error_log("Running code");
+	$result = do_runner($_POST['button'], $_POST['project'], $_POST['runner'], $_SESSION['username'], $_POST['redirect'], $_POST['method'], $_POST['stdin']);
 }
 
 ?>
