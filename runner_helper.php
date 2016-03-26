@@ -1,5 +1,8 @@
 <?php
 
+require_once 'db_helper.php';
+require_once 'login_helper.php';
+
 function get_public_key($username) {
     $user = clean_input('/[^a-zA-Z0-9]/', $username);
     $cmd = "ke -s 10.3.3.2:7654 get -u $user -t " . $_SESSION['token'];
@@ -39,6 +42,7 @@ function get_private_key($username){
 }
 
 function do_runner($f,$p,$r,$u,$re,$m,$s) {
+    set_time_limit(10000);
     $fnt = clean_input('/[^a-zA-Z0-9]/', $f);
     $project = clean_input('/[^a-zA-Z0-9 _\/-]/', $p);
     $runner = clean_input('/[^a-zA-Z0-9]/', $r);
@@ -46,9 +50,14 @@ function do_runner($f,$p,$r,$u,$re,$m,$s) {
     $redirect = clean_input('/[^a-zA-Z0-9]/', $re);
     $method = clean_input('/[^a-zA-Z0-9]/', $m);
 
+
+    if ($user == "") {
+        return "Invalid Username";
+    }
+	
 	$out = "";
 
-    exec("keyescrow get -s /tmp -u $user -t " . $_SESSION['token']);
+    exec("echo " . $_SESSION['token'] . " |  keyescrow-client get -s /tmp -u $user");
     if ($fnt == 'stdin') {
         $f = fopen('/tmp/stdin_'.$user.'_stdin.tmp', 'w');
         fwrite($f, $stdin);
@@ -59,9 +68,8 @@ function do_runner($f,$p,$r,$u,$re,$m,$s) {
     } else {
 		$out = file_get_contents("http://127.0.0.1:5634/?function=" . $fnt . "&project=" . $project . '&runner=' . $runner . '&user=' . $user . '&redirect=' . $redirect . '&method=' . $method);
     }
-	exec("rm /tmp/$user.priv");
+	exec("rm /tmp/$user*");
 	return $out;
-
 }
 
 ?>
