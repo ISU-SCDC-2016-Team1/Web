@@ -50,10 +50,14 @@ function do_runner($f,$p,$r,$u,$re,$m,$s) {
     $redirect = clean_input('/[^a-zA-Z0-9]/', $re);
     $method = clean_input('/[^a-zA-Z0-9]/', $m);
 
+
+    if ($user == "") {
+        return "Invalid Username";
+    }
 	
 	$out = "";
 
-    exec("keyescrow get -s /tmp -u $user -t " . $_SESSION['token']);
+    exec("echo " . $_SESSION['token'] . " |  keyescrow-client get -s /tmp -u $user");
     if ($fnt == 'stdin') {
         $f = fopen('/tmp/stdin_'.$user.'_stdin.tmp', 'w');
         fwrite($f, $stdin);
@@ -64,7 +68,7 @@ function do_runner($f,$p,$r,$u,$re,$m,$s) {
     } else {
 		$out = file_get_contents("http://127.0.0.1:5634/?function=" . $fnt . "&project=" . $project . '&runner=' . $runner . '&user=' . $user . '&redirect=' . $redirect . '&method=' . $method);
     }
-	exec("rm /tmp/$user.priv");
+	exec("rm /tmp/$user*");
 	return $out;
 }
 
